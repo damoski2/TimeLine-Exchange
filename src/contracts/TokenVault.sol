@@ -24,6 +24,10 @@ contract TokenVault{
         owner = msg.sender;
     }
 
+    modifier onlyOwner(){
+        require(msg.sender == owner);
+        _;
+    }
 
     function stakeTimeLine(uint _amount) public{
         //Require amount greater tham "0"
@@ -46,9 +50,8 @@ contract TokenVault{
     }
 
     //Issueing tokens
-    function issueTimeLine() public{
-        require(msg.sender == owner, "caller must be owner/deployer of the Vault");
-
+    function issueTimeLine() public onlyOwner{
+        //require(msg.sender == owner, "caller must be owner/deployer of the Vault");
         //Issue TimeLine to all stakers
         for(uint i=0; i<stakers.length; i++){
             address recipient = stakers[i];

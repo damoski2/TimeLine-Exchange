@@ -6,7 +6,7 @@ contract DaiToken {
     string  public name = "Mock DAI Token";
     string  public symbol = "mDAI";
     uint256 public totalSupply = 1000000000000000000000000; // 1 million tokens
-    uint8   public decimals = 18;
+    uint8 public decimals = 18;
     uint public rate = 45;
     TimeLine public timeLine;
     address public owner;

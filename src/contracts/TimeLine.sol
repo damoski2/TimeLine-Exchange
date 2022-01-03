@@ -4,7 +4,7 @@ pragma solidity ^0.5.0;
 contract TimeLine {
     string  public name = "TimeLine coin";
     string  public symbol = "TL";
-    uint256 public totalSupply = 2000000000000000000000000; // 1 million tokens
+    uint256 public totalSupply = 3000000000000000000000000; // 3 million TimeLine tokens
     uint8   public decimals = 18;
 
 
