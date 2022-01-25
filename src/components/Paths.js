@@ -13,135 +13,42 @@ import styled from "styled-components";
 import Carousel from "./Carousel";
 import { GlobalContext } from "../context/GlobalState";
 
-const Paths = ()=>{
-
+const Paths = () => {
   const {
+    web3,
     account,
+    setAccount,
     daiToken,
+    setDaiToken,
     timeLine,
+    setTimeLine,
+    timeLineSale,
+    setTimeLineSale,
     kyc,
+    setKyc,
     ethBalance,
+    setEthBalance,
     daiTokenBalance,
+    setDaiTokenBalance,
     tokenVault,
+    setTokenVault,
     timeLineBalance,
+    setTimeLineBalance,
     stakingBalance,
+    setStakingBalance,
     loading,
+    setLoading,
     Mstate,
+    setMstate,
     userConnected,
-    setData,
-    notLoading,
+    setUserConnected,
   } = useContext(GlobalContext);
 
+  //console.log(web3);
+
   useEffect(() => {
-  const loadWeb3 = async()=>{
-    if(window.ethereum){
-      window.web3 = new Web3(window.ethereum)
-      await window.ethereum.enable()
-      console.log('ddd')
-    }
-    else if(window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider)
-    }
-    else {
-      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
-    }
-  }
-
-  const loadBlockChainData = async()=> {
-    const web3 = window.web3;
-
-    const accounts = await web3.eth.getAccounts();
-    setData('account', accounts[0])
-   /*  setState({
-      ...state,
-      account: accounts[0],
-    }); */
-    //this.setState({ account: accounts[0] });
-    const ethBalance = await web3.eth.getBalance(account);
-    setData('ethBalance', ethBalance)
-    /* setState({ ...state, ethBalance }); */
-    //this.setState({ ethBalance });
-    const networkId = await web3.eth.net.getId();
-
-    //Check and set variable if User wallet is connected
-    checkAccount()
-      ? setData( 'userConnected', true )
-      : setData('userConnected', false );
-
-    //Load DaiToken
-    const daiTokenData = DaiToken.networks[networkId];
-    if (daiTokenData) {
-      const daiToken = new web3.eth.Contract(
-        DaiToken.abi,
-        daiTokenData.address
-      );
-      setData('daiToken', daiToken);
-
-      let daiTokenBalance = await daiToken.methods.balanceOf(account).call();
-      setData('daiTokenBalance', daiTokenBalance.toString());
-    } else {
-      window.alert("Daitoken not deployed to the network.");
-    }
-
-    //Load TimeLine
-    const timeLineData = TimeLine.networks[networkId];
-    if (timeLineData) {
-      const timeLine = new web3.eth.Contract(
-        TimeLine.abi,
-        timeLineData.address
-      );
-      setData('timeLine', timeLine);
-
-      let timeLineBalance = await timeLine.methods.balanceOf(account).call();
-      setData('timeLineBalance', timeLineBalance.toString());
-    } else {
-      window.alert("TimeLine not deployed to the network.");
-    }
-
-    //Load TokenVault
-    const tokenVaultData = TokenVault.networks[networkId];
-    if (tokenVaultData) {
-      const tokenVault = new web3.eth.Contract(
-        TokenVault.abi,
-        tokenVaultData.address
-      );
-      setData('tokenVault', tokenVault);
-      let stakingBalance = await tokenVault.methods
-        .stakingBalance(account)
-        .call();
-      setData(
-        'stakingBalance', stakingBalance === null ? 0 : stakingBalance.toString(),
-      );
-    } else {
-      window.alert("TokenVault not deployed to the network");
-    }
-
-    //Load TimeLineSale
-    const timeLineSaleData = TimeLineSale.networks[networkId];
-    if (timeLineSaleData) {
-      const timeLineSale = new web3.eth.Contract(
-        TimeLineSale.abi,
-        timeLineSaleData.address
-      );
-      setData('timeLineSale', timeLineSale);
-    } else {
-      window.alert("TimeLineSale not deployed to the network");
-    }
-
-    //Load KYC contract
-    const kycData = KYC.networks[networkId];
-    if (kycData) {
-      const kyc = new web3.eth.Contract(KYC.abi, kycData.address);
-      setData('kyc',kyc);
-    } else {
-      window.alert("KYC not deployed to the network");
-    }
-
-    setData( 'loading',false);
-  }
-   loadWeb3();
-   loadBlockChainData();
-  },[]);
+    
+  }, []);
 
   /*   const { account, daiToken, timeLine, 
     tokenVault, timeLineSale, kyc, ethBalance, daiTokenBalance,
@@ -171,20 +78,18 @@ const Paths = ()=>{
     }
   }
 
-
-
   const buyTimeLine = (daiAmount) => {
-    setData('loading', true );
+    setLoading(true)
     daiToken.methods
       .buytimeline()
       .send({ value: daiAmount, from: account })
       .on("transactionHash", (hash) => {
-        setData('loading', false);
+        setLoading(false)
       });
   };
 
   const sellTimeLine = (timeLineAmount) => {
-    setData('loading', true);
+    setLoading(true)
     timeLine.methods
       .approve(daiToken.address, timeLineAmount)
       .send({ from: account })
@@ -193,13 +98,13 @@ const Paths = ()=>{
           .selltimeline(timeLineAmount)
           .send({ from: account })
           .on("transactionHash", (hash) => {
-            setData('loading', false);
+            setLoading(false)
           });
       });
   };
 
   const stakeTokens = (amount) => {
-    setData('loading', true);
+    setLoading(true)
     daiToken.methods
       .approve(tokenVault.address, amount)
       .send({ from: account })
@@ -208,36 +113,38 @@ const Paths = ()=>{
           .stakeTimeLine(amount)
           .send({ from: account })
           .on("transactionHash", (hash) => {
-            setData('loading', false);
+            setLoading(false)
           });
       });
   };
 
   const unstakeTokens = (amount) => {
-    setData('loading', true);
+    setLoading(true)
     tokenVault.methods
       .unStakeTimeLine()
       .send({ from: account })
       .on("transactionHash", (hash) => {
-        setData('loading', false);
+        setLoading(false)
       });
   };
 
   const addPioneer = (name) => {
-    setData('loading', true);
+    setLoading(true)
     kyc.methods
       .invest(name)
       .send({ from: account })
       .on("transactionHash", (hash) => {
         /*   console.log(hash);
         console.log("dd"); */
-        setData('Mstate', true);
-        setData('loading', false);
+        setMstate(true)
+        setLoading(false)
         //Trigger Modal
       });
   };
 
-  return window.web3?(
+  return loading ? (
+    <div>No Web 3 loaded</div>
+  ) : (
     <Routes>
       <Route
         path="/"
@@ -252,17 +159,11 @@ const Paths = ()=>{
       />
       <Route
         path="/pioneers/kyc"
-        element={
-          <KycComponent addPioneer={addPioneer} />
-        }
+        element={<KycComponent addPioneer={addPioneer} />}
       />
     </Routes>
-  ) :(
-    <div>
-      No Web 3 loaded
-    </div>
-  )
-}
+  );
+};
 
 export default Paths;
 

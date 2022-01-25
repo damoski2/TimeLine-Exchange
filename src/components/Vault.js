@@ -1,14 +1,30 @@
-import React,{ useState } from 'react'
+import React,{ useState, useContext } from 'react'
 import styled from 'styled-components';
 import tlDropDown from '../images/tlDropDown.svg'
 import arrowUp from '../images/arrowUp.svg'
 import daiLogo from '../images/dai.svg';
 import tlSmall from '../images/tlSmall.svg';
 import daiDD from '../images/daiDropDown.svg'
+import { GlobalContext } from "../context/GlobalState.js";
 
 
 
-const Vault = ({ daiTokenBalance, stakingBalance, timeLineBalance, stakeTokens, unstakeTokens, ethBalance }) => {
+const Vault = ({ stakeTokens, unstakeTokens }) => {
+    const {
+        web3,
+        account,
+        daiToken,
+        timeLine,
+        kyc,
+        ethBalance,
+        daiTokenBalance,
+        tokenVault,
+        timeLineBalance,
+        stakingBalance,
+        loading,
+        Mstate,
+        userConnected,
+      } = useContext(GlobalContext);
 
     const [inputValue, setInputValue] = useState('');
     const [selectInp, setSelectInp] = useState('');
@@ -17,21 +33,27 @@ const Vault = ({ daiTokenBalance, stakingBalance, timeLineBalance, stakeTokens, 
         setSelectInp(e.target.value)
     }
 
+    const displayWei = (_tokenBalance)=> web3? web3.utils.fromWei(_tokenBalance, "Ether") : '0'
+
+    const convertWei = (_tokenBalance)=> web3? web3.utils.toWei(_tokenBalance, "Ether") : '0'
+
     const submit = (e)=>{
         e.preventDefault()
-        let amount = window.web3.utils.toWei(inputValue, 'Ether')
+        let amount = convertWei(inputValue)
         stakeTokens(amount);
     }
+
+   
 
     return (
         <FormContainer onSubmit={submit} >
             <HeadingDiv>
                 <p style={{ color: '#000000', fontSize: '20px', alignSelf: 'center', margin:'0', lineHeight: '24.2px'}} >Staking Balance: </p>
-                <HeadingButton>{window.web3.utils.fromWei(stakingBalance,'Ether')}</HeadingButton>
+                <HeadingButton>{displayWei(stakingBalance)}</HeadingButton>
             </HeadingDiv>
             <HeadingDiv style={{ marginTop: '1em' }} >
                 <p style={{ color: '#000000', fontSize: '20px', alignSelf: 'center', margin:'0', lineHeight: '24.2px'}} >Reward Balance</p>
-                <HeadingButton>{window.web3.utils.fromWei(timeLineBalance,'Ether')}</HeadingButton>
+                <HeadingButton>{displayWei(timeLineBalance)}</HeadingButton>
             </HeadingDiv>
             <ExtendDiv>
                 <InputBalance disabled value="Total Wallet Balance" style={{ fontSize: '14px', color: 'rgba(137, 137, 137, 1)' }} />
@@ -46,7 +68,7 @@ const Vault = ({ daiTokenBalance, stakingBalance, timeLineBalance, stakeTokens, 
                 </DD_Div>
             </ExtendDiv>
             <Div>
-                <ActualBalance disabled value={ selectInp == "tl"? window.web3.utils.fromWei(timeLineBalance,'Ether') : window.web3.utils.fromWei(ethBalance,'Ether')  } placeholder="6,300" style={{ fontSize: '48px', color:' #1C1D26', borderTop:'none', paddingTop:'0' }} />
+                <ActualBalance disabled value={ selectInp == "tl"? displayWei(timeLineBalance): displayWei(ethBalance)  } placeholder="6,300" style={{ fontSize: '48px', color:' #1C1D26', borderTop:'none', paddingTop:'0' }} />
             </Div>
             <Div style={{ marginTop: '2em' }} >
                 <HeadingDiv>

@@ -1,22 +1,31 @@
-import React from "react";
+import React,{ useContext } from "react";
 import styled from "styled-components";
 import Vault from "./Vault";
+import { GlobalContext } from "../context/GlobalState.js";
 
 const FarmingComponent = ({
-  daiTokenBalance,
-  timeLineBalance,
-  stakingBalance,
   stakeTokens,
   unstakeTokens,
-  ethBalance
 }) => {
+  const {
+    web3,
+    account,
+    daiToken,
+    timeLine,
+    kyc,
+    ethBalance,
+    daiTokenBalance,
+    tokenVault,
+    timeLineBalance,
+    stakingBalance,
+    loading,
+    Mstate,
+    userConnected,
+  } = useContext(GlobalContext);
   return (
     <section style={{ background: "#080D2F", width: "100%", paddingBottom: "2em"}}>
       <Container>
         <Vault
-          daiTokenBalance={daiTokenBalance}
-          timeLineBalance={timeLineBalance}
-          stakingBalance={stakingBalance}
           stakeTokens={stakeTokens}
           unstakeTokens={unstakeTokens}
           ethBalance={ethBalance}

@@ -10,9 +10,17 @@ export default (state, action)=>{
 
         case 'SET_DATA':
             const { key, _data } = action.payload
-            return{
+            console.log(key, _data)
+            return {
                 ...state,
                 [key]: _data
+            }
+
+        case 'SET_ADDRESS':
+            console.log(action.payload)
+            return{
+                ...state,
+                account: action.payload
             }
     }
 }

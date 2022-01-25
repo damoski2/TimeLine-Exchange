@@ -1,14 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 import tlDropDown from '../images/tlDropDown.svg'
 import arrowUp from '../images/arrowUp.svg'
 import daiLogo from '../images/dai.svg';
 import tlSmall from '../images/tlSmall.svg';
 import daiDD from '../images/daiDropDown.svg'
+import { GlobalContext } from '../context/GlobalState.js'
 
 
-const SellForm = ({ ethBalance, daiTokenBalance, timeLineBalance, sellTimeLine, currentForm, setCurrentForm}) => {
-    console.log(daiTokenBalance)
+const SellForm = ({ sellTimeLine, currentForm, setCurrentForm}) => {
+    const {   web3,
+        account,
+        daiToken,
+        timeLine,
+        kyc,
+        ethBalance,
+        daiTokenBalance,
+        tokenVault,
+        timeLineBalance,
+        stakingBalance,
+        loading,
+        Mstate,
+        userConnected } = useContext(GlobalContext)
 
     const [output, setOutput] = useState('0')
     const [inputValue, setInputValue] = useState('');
@@ -27,7 +40,7 @@ const SellForm = ({ ethBalance, daiTokenBalance, timeLineBalance, sellTimeLine, 
     const submit = (e)=>{
         e.preventDefault();
         let daiAmount;
-        daiAmount = window.web3.utils.toWei(inputValue,'Ether');
+        daiAmount = web3.utils.toWei(inputValue,'Ether');
         sellTimeLine(daiAmount)
         console.log('TimeLine Purchased')
     }

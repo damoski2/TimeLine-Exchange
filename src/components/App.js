@@ -36,17 +36,11 @@ const App = (props)=>{
         <AppContainer>
           <NavBar account={account} userConnected={userConnected} />
           <Carousel
-            ethBalance={ethBalance}
-            daiTokenBalance={daiTokenBalance}
-            timeLineBalance={timeLineBalance}
             stakingBalance={stakingBalance}
             buyTimeLine={buyTimeLine}
             sellTimeLine={sellTimeLine}
           />
           <FarmingComponent
-            ethBalance={ethBalance}
-            daiTokenBalance={daiTokenBalance}
-            timeLineBalance={timeLineBalance}
             stakingBalance={stakingBalance}
             stakeTokens={stakeTokens}
             unstakeTokens={unstakeTokens}

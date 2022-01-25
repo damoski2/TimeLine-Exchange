@@ -12,13 +12,13 @@ const Carousel = ({ daiTokenBalance, timeLineBalance, stakingBalance, buyTimeLin
 
   
   content = currentForm === 'buy'? 
-  <BuyForm ethBalance={ethBalance} daiTokenBalance={daiTokenBalance} timeLineBalance={timeLineBalance} buyTimeLine={buyTimeLine} currentForm={currentForm}  setCurrentForm={setCurrentForm} /> :
-  <SellForm ethBalance={ethBalance} daiTokenBalance={daiTokenBalance} timeLineBalance={timeLineBalance}  currentForm={currentForm}  setCurrentForm={setCurrentForm} sellTimeLine={sellTimeLine} />
+  <BuyForm buyTimeLine={buyTimeLine} currentForm={currentForm}  setCurrentForm={setCurrentForm} /> :
+  <SellForm  currentForm={currentForm}  setCurrentForm={setCurrentForm} sellTimeLine={sellTimeLine} />
 
   useEffect(()=>{
     content = currentForm === 'buy'? 
-  <BuyForm daiTokenBalance={daiTokenBalance} timeLineBalance={timeLineBalance} buyTimeLine={buyTimeLine} currentForm={currentForm}  setCurrentForm={setCurrentForm} /> :
-  <SellForm daiTokenBalance={daiTokenBalance} timeLineBalance={timeLineBalance}  currentForm={currentForm}  setCurrentForm={setCurrentForm} sellTimeLine={sellTimeLine} />
+  <BuyForm  buyTimeLine={buyTimeLine} currentForm={currentForm}  setCurrentForm={setCurrentForm} /> :
+  <SellForm currentForm={currentForm}  setCurrentForm={setCurrentForm} sellTimeLine={sellTimeLine} />
 
   },[currentForm])
 

@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import navLogo from "../images/navLogo.svg";
 import Identicon from "identicon.js";
 import Connection from './Connection';
+import { GlobalContext } from "../context/GlobalState.js";
 
-const Navbar = ({ account, userConnected, connectAccount }) => {
+
+const Navbar = ({ connectAccount }) => {
+
+  const {
+    web3,
+    account,
+    daiToken,
+    timeLine,
+    kyc,
+    ethBalance,
+    daiTokenBalance,
+    tokenVault,
+    timeLineBalance,
+    stakingBalance,
+    loading,
+    Mstate,
+    userConnected,
+  } = useContext(GlobalContext);
+
+  console.log(userConnected)
+
   const renderOut = userConnected ? (
     <>
       <SmallText>{account}</SmallText>
-      {account ? (
+      {account?(
         <img
           className="ml-3"
           width="30"
